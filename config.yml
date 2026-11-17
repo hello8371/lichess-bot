@@ -1,0 +1,117 @@
+token: ""
+url: "https://lichess.org"
+
+engine:
+  dir: "./engines/"
+  name: "fairy-stockfish"
+  debug: false
+  working_dir: ""
+  protocol: "uci"
+  ponder: false
+  polyglot:
+    enabled: false
+    book:
+      standard:
+        - engines/book1.bin
+  draw_or_resign:
+    resign_enabled: false
+    resign_score: -1000
+    resign_moves: 3
+    offer_draw_enabled: false
+    offer_draw_score: 0
+    offer_draw_moves: 10
+    offer_draw_pieces: 10
+  online_moves:
+    max_out_of_book_moves: 10
+    max_retries: 2
+    max_depth: 5
+    chessdb_book:
+      enabled: false
+    lichess_cloud_analysis:
+      enabled: false
+    online_egtb:
+      enabled: false
+  lichess_bot_tbs:
+    syzygy:
+      enabled: false
+  uci_options:
+    Move Overhead: 500
+    Threads: 1
+    Hash: 64
+
+abort_time: 30
+fake_think_time: false
+rate_limiting_delay: 0
+move_overhead: 1000
+max_takebacks_accepted: 0
+quit_after_all_games_finish: false
+
+correspondence:
+  move_time: 2
+  checkin_period: 30
+  disconnect_time: 150
+  ponder: false
+
+challenge:
+  concurrency: 1
+  sort_by: "best"
+  accept_bot: true
+  only_bot: false
+  max_increment: 180
+  min_increment: 0
+  max_base: 10800
+  min_base: 0
+  max_days: .inf
+  min_days: 1
+  variants:
+    - standard
+    - fromPosition
+    - antichess
+    - atomic
+    - chess960
+    - crazyhouse
+    - horde
+    - kingOfTheHill
+    - racingKings
+    - threeCheck
+  time_controls:
+    - bullet
+    - blitz
+    - rapid
+    - classical
+    - correspondence
+  modes:
+    - casual
+    - rated
+  block_list: []
+  allow_list: []
+
+greeting:
+  hello: "Merhaba! İyi oyunlar."
+  goodbye: "Güzel oyundu, teşekkürler!"
+  hello_spectators: "İyi seyirler!"
+  goodbye_spectators: "İzlediğiniz için teşekkürler!"
+
+matchmaking:
+  allow_matchmaking: true
+  allow_during_games: false
+  challenge_variant: "random"
+  challenge_timeout: 30
+  challenge_initial_time:
+    - 60
+    - 180
+  challenge_increment:
+    - 0
+    - 2
+  challenge_days:
+    - 1
+    - 2
+  opponent_min_rating: 600
+  opponent_max_rating: 4000
+  rating_preference: "none"
+  opponent_allow_bot: true
+  opponent_only_bot: false
+  challenge_mode: "random"
+  challenge_filter: "none"
+  include_challenge_block_list: false
+  delay_after_game: 10
