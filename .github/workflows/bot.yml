@@ -14,22 +14,27 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Kutuphane ve Motor Kurulumu
+      - name: Guncel Bot ve Motor Kurulumu
         run: |
           sudo apt-get update
-          sudo apt-get install -y stockfish
-          mkdir -p engines lib
-          cp /usr/games/stockfish engines/fairy-stockfish
-          chmod +x engines/fairy-stockfish
-          printf "lichess_bot_version: 2024.10.1\ndeprecated_python_version: 3.8.0\nminimum_python_version: 3.8.0\ndeprecation_date: 2027-01-01\n" > lib/versioning.yml
-          pip install requests pyyaml flask chess backoff rich
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Botu Baslat
+          sudo apt-get install -y stockfish curl jq
+          git clone https://github.com resmi_bot
+          cp config.yml resmi_bot/config.yml
+          mkdir -p resmi_bot/engines
+          cp /usr/games/stockfish resmi_bot/engines/fairy-stockfish
+          chmod +x resmi_bot/engines/fairy-stockfish
+          cd resmi_bot
+          pip install -r requirements.txt
+      - name: Botu Proxy ile Baslat
         env:
           LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_BOT_TOKEN }}
         run: |
-          sed -i '/keep_alive/d' lichess-bot.py
+          cd resmi_bot
           sed -i "s/^token:.*/token: \"$LICHESS_BOT_TOKEN\"/" config.yml
-          sed -i "s/^rate_limiting_delay:.*/rate_limiting_delay: 2000/" config.yml
-          sleep 65
+          PROXY=$(curl -s "https://proxyscrape.com" | head -n 1 | tr -d '\r')
+          echo "Kullanilan Proxy: $PROXY"
+          if [ -n "$PROXY" ]; then
+            export HTTP_PROXY="http://$PROXY"
+            export HTTPS_PROXY="http://$PROXY"
+          fi
           python3 lichess-bot.py
