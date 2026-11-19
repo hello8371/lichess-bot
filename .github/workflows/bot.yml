@@ -17,16 +17,14 @@ jobs:
       - name: Fairy-Stockfish ve Bot Kurulumu
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl unzip
+          sudo apt-get install -y fairy-stockfish curl
           H="github.com"
           U="lichess-bot-devs"
           R="lichess-bot.git"
           git clone "https://$H/$U/$R" resmi_bot
           cp config.yml resmi_bot/config.yml
           mkdir -p resmi_bot/engines
-          FS_U="fairy-stockfish"
-          FS_R="Fairy-Stockfish"
-          curl -L "https://$H/$FS_U/$FS_R/releases/download/fairy_sf_14_0_1/fairy-stockfish-largeboard_x86-64" -o resmi_bot/engines/fairy-stockfish
+          cp /usr/games/fairy-stockfish resmi_bot/engines/fairy-stockfish
           chmod +x resmi_bot/engines/fairy-stockfish
           cd resmi_bot
           pip install -r requirements.txt
