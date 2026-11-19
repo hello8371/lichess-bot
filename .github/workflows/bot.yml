@@ -14,13 +14,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Kutuphaneleri Yukle
-        run: pip install -r requirements.txt
+      - name: Kutuphane ve Motor Kurulumu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y stockfish
+          mkdir -p engines
+          cp /usr/games/stockfish engines/fairy-stockfish
+          chmod +x engines/fairy-stockfish
+          pip install requests pyyaml flask chess backoff rich
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Botu Baslat
         env:
           LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_BOT_TOKEN }}
         run: |
           sed -i "s/^token:.*/token: \"$LICHESS_BOT_TOKEN\"/" config.yml
-          chmod +x engines/fairy-stockfish
           python3 lichess-bot.py
-
