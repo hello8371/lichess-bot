@@ -22,7 +22,7 @@ jobs:
           cp /usr/games/stockfish engines/fairy-stockfish
           chmod +x engines/fairy-stockfish
           printf "lichess_bot_version: 2024.10.1\ndeprecated_python_version: 3.8.0\nminimum_python_version: 3.8.0\ndeprecation_date: 2027-01-01\n" > lib/versioning.yml
-          pip install requests pyyaml chess backoff rich
+          pip install requests pyyaml flask chess backoff rich
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Botu Baslat
         env:
@@ -30,4 +30,6 @@ jobs:
         run: |
           sed -i '/keep_alive/d' lichess-bot.py
           sed -i "s/^token:.*/token: \"$LICHESS_BOT_TOKEN\"/" config.yml
+          sed -i "s/^rate_limiting_delay:.*/rate_limiting_delay: 2000/" config.yml
+          sleep 65
           python3 lichess-bot.py
