@@ -21,7 +21,7 @@ jobs:
           mkdir -p engines lib
           cp /usr/games/stockfish engines/fairy-stockfish
           chmod +x engines/fairy-stockfish
-          printf "lichess_bot_version: 2024.10.1\ndeprecated_python_version: 3.8.0\nminimum_python_version: 3.8.0\n" > lib/versioning.yml
+          printf "lichess_bot_version: 2024.10.1\ndeprecated_python_version: 3.8.0\nminimum_python_version: 3.8.0\ndeprecation_date: 2027-01-01\n" > lib/versioning.yml
           pip install requests pyyaml flask chess backoff rich
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Botu Baslat
