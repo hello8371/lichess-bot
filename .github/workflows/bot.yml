@@ -20,5 +20,7 @@ jobs:
         env:
           LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_BOT_TOKEN }}
         run: |
+          sed -i "s/^token:.*/token: \"$LICHESS_BOT_TOKEN\"/" config.yml
           chmod +x engines/fairy-stockfish
           python3 lichess-bot.py
+
