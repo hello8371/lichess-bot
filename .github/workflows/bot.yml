@@ -18,7 +18,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y stockfish curl jq
-          git clone https://github.com resmi_bot
+          H="github.com"
+          U="lichess-bot-devs"
+          R="lichess-bot.git"
+          git clone "https://$H/$U/$R" resmi_bot
           cp config.yml resmi_bot/config.yml
           mkdir -p resmi_bot/engines
           cp /usr/games/stockfish resmi_bot/engines/fairy-stockfish
