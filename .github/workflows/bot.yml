@@ -17,7 +17,7 @@ jobs:
       - name: Guncel Bot ve Motor Kurulumu
         run: |
           sudo apt-get update
-          sudo apt-get install -y stockfish curl jq
+          sudo apt-get install -y stockfish curl
           H="github.com"
           U="lichess-bot-devs"
           R="lichess-bot.git"
@@ -28,16 +28,21 @@ jobs:
           chmod +x resmi_bot/engines/fairy-stockfish
           cd resmi_bot
           pip install -r requirements.txt
-      - name: Botu Proxy ile Baslat
+      - name: Botu Calisan Proxy ile Baslat
         env:
           LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_BOT_TOKEN }}
         run: |
           cd resmi_bot
           sed -i "s/^token:.*/token: \"$LICHESS_BOT_TOKEN\"/" config.yml
-          PROXY=$(curl -s "https://proxyscrape.com" | head -n 1 | tr -d '\r')
-          echo "Kullanilan Proxy: $PROXY"
-          if [ -n "$PROXY" ]; then
-            export HTTP_PROXY="http://$PROXY"
-            export HTTPS_PROXY="http://$PROXY"
-          fi
+          P_HOST="://githubusercontent.com"
+          P_PATH="TheSpeedX/PROXY-List/master/http.txt"
+          curl -s "https://$P_HOST/$P_PATH" | head -n 50 > proxies.txt
+          for P in $(cat proxies.txt | tr -d '\r'); do
+            if curl -s -x "http://$P" --connect-timeout 3 "https://lichess.org" | grep -q "api"; then
+              echo "Calisan Proxy Bulundu: $P"
+              export HTTP_PROXY="http://$P"
+              export HTTPS_PROXY="http://$P"
+              break
+            fi
+          done
           python3 lichess-bot.py
