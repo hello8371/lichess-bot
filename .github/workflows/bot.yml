@@ -1,0 +1,24 @@
+name: Lichess Bot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python Kurulumu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Kutuphaneleri Yukle
+        run: pip install -r requirements.txt
+      - name: Botu Baslat
+        env:
+          LICHESS_BOT_TOKEN: ${{ secrets.LICHESS_BOT_TOKEN }}
+        run: |
+          chmod +x engines/fairy-stockfish
+          python3 lichess-bot.py
